@@ -18,8 +18,14 @@
   -->
 
   <main>
-    <route default>
+    <application name="@demo/navbar-app"></application>
+    <route path="home">
       <application name="@single-spa/welcome"></application>
     </route>
+    <route default >
+      <h1>404 Not Found!</h1>
+    </route>
   </main>
+
+  <redirect from="/" to="/home"></redirect>
 </single-spa-router>
