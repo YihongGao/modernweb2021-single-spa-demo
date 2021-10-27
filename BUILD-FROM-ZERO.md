@@ -6,9 +6,9 @@
   3. angular cli - 12.2.3
 
 ## Step
-  1. Build **root-config** (Single-spa root-config)
+  1. 建立 **root-config** (Single-spa root-config)
   ```
-  # create single-spa 
+  # 使用 create-single-spa 建立 single-spa 專案
   npx create-single-spa
   
   /** 
@@ -22,21 +22,21 @@
 
   ```
 
-  2. Build **navbar-app** (Single-spa application)
+  2. 建立 **navbar-app** 並配置為 Single-spa application
   ```
-    # create angular app
+    # 使用 angular-cli 建立 angular 專案
+    # 建議 prefix 為唯一值，若 root-config 同時載入兩個 angular application(Single-spa application) 且該 prefix 重複時，則可能會載入錯誤的 application 內容
+    # 必需啟用 routing feature
     ng new navbar-app --prefix navbar-app --routing
 
-    # change app.component.html and app.component.css to navbar content.  
-
-     # go to navbar-app dir.
+     # 移動到 navbar-app 目錄
     cd navbar-app
 
-    # write navbar html and css
+    # 寫入 navbar 的 HTML, CSS
     curl https://raw.githubusercontent.com/YihongGao/modernweb2021-single-spa-demo/master/material/navbar/app.component.html --output ./src/app/app.component.html
     curl https://raw.githubusercontent.com/YihongGao/modernweb2021-single-spa-demo/master/material/navbar/app.component.css --output ./src/app/app.component.css
 
-    # add single-spa feature
+    # 將 navbar-app 轉為 single-spa application
     ng add single-spa-angular
     /**
       Would you like to proceed? Yes
@@ -46,39 +46,35 @@
     **/
     npm install
 
-    # configure routes 
+    # 配置 routing
     curl https://raw.githubusercontent.com/YihongGao/modernweb2021-single-spa-demo/master/material/navbar/app-routing.module.ts --output ./src/app/app-routing.module.ts
   ```
-  > **Important**: argument **prefix** in ng command must be setting different from other single-spa application.  
+  > **重要**: 建議 prefix 為唯一值，若 root-config 同時載入兩個 angular application(Single-spa application) 且該 prefix 重複時，則可能會載入錯誤的 application 內容 
 
-  3. Register **navbar-app** into **root-config**
+  3. 於 **root-config** 服務中註冊 **navbar-app**  
   ```
-  # go to root-config dir.
+  # 移動到 root-config 目錄
   cd ../root-config
 
-  # register application and define layout
+  # 將 navbar-app 加入註冊表(ejs) 與 配置 layout-engine(html)
   curl https://raw.githubusercontent.com/YihongGao/modernweb2021-single-spa-demo/master/material/root-config/with-navbar/index.ejs --output ./src/index.ejs
   curl https://raw.githubusercontent.com/YihongGao/modernweb2021-single-spa-demo/master/material/root-config/with-navbar/microfrontend-layout.html --output ./src/microfrontend-layout.html
   ```
 
-  4. Run **root-config** and **navbar-app**
+  4. 啟動 **root-config** 與 **navbar-app**
   ```
-  # go to root-config dir before do run.
-  # cd root-config
+  # 開啟新的 terminal, 並至 root-config 目錄中並啟動服務
   npm run start
 
-  # you should be using new terminal
-  # go to navbar-app dir before do run.
+  # 開啟新的 terminal, 並至 navbar-app 目錄中並啟動服務
   cd navbar-app
   npm run serve:single-spa:navbar-app
   ```
+  > 備註: 現在你能在瀏覽器上使用 [http://localhost:9000] 來檢視目前服務.
 
-  > Note: Now, You can using [http://localhost:9000] show the web page, Can be see the navbar on browser.
-
-  5. Build **vue-app** (Single-spa application)
+  5. 建立 **vue-app** (Single-spa application)
   ```
-    # you should be using new terminal
-    # create vue app
+    # 於專案根目錄使用 create-single-spa 建立 vue project
     npx create-single-spa
     /**     
       Need to install the following packages:
@@ -94,20 +90,20 @@
     **/
   ```
 
-  6. Register **vue-app** into **root-config** and run it,
+  6. 於 **root-config** 服務中註冊 **vue-app** 
   ```
-  # go to root-config dir.
+  # 移動至 root-config
   cd root-config
 
-  # register application and define layout
+  # 將 vue-app 加入註冊表(ejs) 與 配置 layout-engine(html)
   curl https://raw.githubusercontent.com/YihongGao/modernweb2021-single-spa-demo/master/material/root-config/finish/index.ejs --output ./src/index.ejs
   curl https://raw.githubusercontent.com/YihongGao/modernweb2021-single-spa-demo/master/material/root-config/finish/microfrontend-layout.html --output ./src/microfrontend-layout.html
 
-  # go to vue-app dir and run it.
+  # 移動至 vue 專案並啟動服務
   cd ../vue-app
   npm run serve
   ```
 
-> Note: Reflash you page ([http://localhost:9000]) and click Vue button on navbar, You can see vue init page in the same URL domain and port.
+> 備註: 重新整理瀏覽器([http://localhost:9000]) 並可使用功能列表切換， Home 跟 Vue 頁面， 能看到 angualr(navbar-app) 與 vue 同時呈現於畫面上。
 
 [http://localhost:9000]: http://localhost:9000
